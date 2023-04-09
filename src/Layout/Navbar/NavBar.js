@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { AiFillHome, AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { FaFacebookF, FaInstagram } from "react-icons/fa";
+import { MdGroups2 } from "react-icons/md";
+import { BiCut } from "react-icons/bi";
+import { BsCalendarDateFill, BsFillFilePersonFill } from "react-icons/bs";
+import { Link, NavLink } from "react-router-dom";
 
 const NavBar = () => {
   const [nav, setNav] = useState(false);
@@ -8,15 +13,52 @@ const NavBar = () => {
     setNav(!nav);
   };
 
+  const hover = "p-4 flex space-x-1 hover:text-rose transitions text-white";
+  const Hover = ({ isActive }) => (isActive ? "text-subMain p-4 flex-space-x-1" : hover);
+
   return (
     <div className="flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-white">
-      <h1 className="w-full text-3xl font-bold text-[#00df9a]">REACT.</h1>
+      <Link to="/">
+        <img className="w-[500px] mx-auto my-4" src="/images/logo.png" alt="logo" />
+      </Link>
+
       <ul className="hidden md:flex">
-        <li className="p-4">Inicio</li>
-        <li className="p-4">Nosotros</li>
-        <li className="p-4">Servicios</li>
-        <li className="p-4">clientes</li>
-        <li className="p-4">Reservaciones</li>
+        <li className="p-1 space-x-1">
+          <NavLink to="/movies" className={Hover}>
+            <AiFillHome size={20} />
+            <span>Inicio</span>
+          </NavLink>
+        </li>
+        <li className="p-1 space-x-1">
+          <NavLink to="/movies" className={Hover}>
+            <MdGroups2 size={20} />
+            <span>Nosotros</span>
+          </NavLink>
+        </li>
+        <li className="p-1 space-x-1">
+          <NavLink to="/movies" className={Hover}>
+            <BiCut size={20} />
+            <span>Servicios</span>
+          </NavLink>
+        </li>
+        <li className="p-1 space-x-1">
+          <NavLink to="/movies" className={Hover}>
+            <BsFillFilePersonFill size={20} />
+            <span>clientes</span>
+          </NavLink>
+        </li>
+        <li className="p-1 space-x-1">
+          <NavLink to="/movies" className={Hover}>
+            <BsCalendarDateFill size={20} />
+            <span>Reservaciones</span>
+          </NavLink>
+        </li>
+        <li className="p-1 space-x-3">
+          <NavLink to="/movies" className={Hover}>
+            <FaFacebookF size={20} />
+            <FaInstagram size={20} />
+          </NavLink>
+        </li>
       </ul>
       <div onClick={handleNav} className="block md:hidden">
         {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
@@ -28,12 +70,33 @@ const NavBar = () => {
             : "ease-in-out duration-500 fixed left-[-100%]"
         }
       >
-        <h1 className="w-full text-3xl font-bold text-[#00df9a] m-4">REACT.</h1>
-        <li className="p-4 border-b border-gray-600">Home</li>
-        <li className="p-4 border-b border-gray-600">Company</li>
-        <li className="p-4 border-b border-gray-600">Resources</li>
-        <li className="p-4 border-b border-gray-600">About</li>
-        <li className="p-4">Contact</li>
+        <Link to="/">
+          <img className="w-[500px] mx-auto my-4" src="/images/logo.png" alt="logo" />
+        </Link>{" "}
+        <li className="p-4 flex space-x-1">
+          <AiFillHome size={20} />
+          <span>Inicio</span>
+        </li>
+        <li className="p-4 flex space-x-1">
+          <MdGroups2 size={20} />
+          <span>Nosotros</span>
+        </li>
+        <li className="p-4 flex space-x-1">
+          <BiCut size={20} />
+          <span>Servicios</span>
+        </li>
+        <li className="p-4 flex space-x-1">
+          <BsFillFilePersonFill size={20} />
+          <span>clientes</span>
+        </li>
+        <li className="p-4 flex space-x-1">
+          <BsCalendarDateFill size={20} />
+          <span>Reservaciones</span>
+        </li>
+        <li className="p-4 flex space-x-3">
+          <FaFacebookF size={20} />
+          <FaInstagram size={20} />
+        </li>
       </ul>
     </div>
   );
