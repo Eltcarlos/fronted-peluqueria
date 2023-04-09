@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BsCalendar2Date, BsFillGridFill } from "react-icons/bs";
 import { FaCashRegister } from "react-icons/fa";
 import { RiCoupon2Fill, RiLogoutCircleLine } from "react-icons/ri";
 
 import Layout from "./../../Layout/Layout";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/auth/authSlice";
 
 const SideBar = ({ children }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { status } = useSelector((state) => state.auth);
+
+  const logOut = () => {
+    const message = "Error en la petición";
+    dispatch(logout(message));
+  };
+
+  useEffect(() => {
+    if (status === "not-authenticated") {
+      navigate("/");
+    }
+  }, [status, navigate]);
+
   const SideLinks = [
     {
       name: "Estadisticas",
@@ -48,7 +65,7 @@ const SideBar = ({ children }) => {
                 </NavLink>
               ))
             }
-            <button className={`${inActive} ${hover} w-full`}>
+            <button onClick={logOut} className={`${inActive} ${hover} w-full`}>
               <RiLogoutCircleLine /> Log Out
             </button>
           </div>
