@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCash, sendCash } from "../../store/cashRegister/thunks";
 import Select from "react-select";
@@ -10,6 +10,7 @@ const CashForm = () => {
   const dispatch = useDispatch();
   const { cashLoading } = useSelector((state) => state.cash);
   const { method, worker, customStyles, setForm, onChange, handleChange, handleChangeMethod, form } = useCashFetch();
+  const [state, setState] = useState(false);
 
   const onClick = (e) => {
     e.preventDefault();
@@ -32,8 +33,11 @@ const CashForm = () => {
         });
         dispatch(cashLoad());
         dispatch(sendCash(form));
+        setTimeout(() => {
+          setState(false);
+        }, 2000);
       } else {
-        return;
+        return setState(false);
       }
     });
   };
@@ -43,10 +47,10 @@ const CashForm = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (cashLoading === true) {
+    if (cashLoading === true || state === true) {
       dispatch(getAllCash());
     }
-  }, [dispatch, cashLoading]);
+  }, [dispatch, cashLoading, state]);
 
   return (
     <div className="w-full ">
