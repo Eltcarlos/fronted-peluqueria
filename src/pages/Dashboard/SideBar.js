@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { BsCalendar2Date, BsFillGridFill } from "react-icons/bs";
 import { FaCashRegister } from "react-icons/fa";
-import { RiCoupon2Fill, RiLogoutCircleLine } from "react-icons/ri";
+import { RiLogoutCircleLine } from "react-icons/ri";
 
-import Layout from "./../../Layout/Layout";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/auth/authSlice";
+import { removeCash } from "../../store/cashRegister/cashSlice";
 
 const SideBar = ({ children }) => {
   const dispatch = useDispatch();
@@ -16,6 +16,8 @@ const SideBar = ({ children }) => {
   const logOut = () => {
     const message = "Error en la petición";
     dispatch(logout(message));
+    dispatch(removeCash());
+    localStorage.removeItem("token");
   };
 
   useEffect(() => {
@@ -29,11 +31,6 @@ const SideBar = ({ children }) => {
       name: "Estadisticas",
       link: "/dashboard/statistics",
       icon: BsFillGridFill,
-    },
-    {
-      name: "Cupones",
-      link: "/dashboard/coupons",
-      icon: RiCoupon2Fill,
     },
     {
       name: "Reservaciones",
@@ -53,7 +50,7 @@ const SideBar = ({ children }) => {
   const Hover = ({ isActive }) => (isActive ? `${active} ${inActive}` : `${inActive} ${hover}`);
 
   return (
-    <Layout>
+    <div className="bg-default bg-no-repeat bg-cover bg-center bg-fixed text-white">
       <div className="min-h-screen container mx-auto px-2">
         <div className="xl:grid grid-cols-8 gap-10 items-start md:py-12 py-6">
           <div className="col-span-2 sticky bg-dry border border-gray-800 p-6 rounded-md xl:mb-0 mb-5">
@@ -69,10 +66,10 @@ const SideBar = ({ children }) => {
               <RiLogoutCircleLine /> Log Out
             </button>
           </div>
-          <div className="col-span-6 rounded-md bg-dry border border-gray-800 p-6">{children}</div>
+          <div className="col-span-6 rounded-md bg-white border border-gray-800 p-6">{children}</div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 

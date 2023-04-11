@@ -2,7 +2,7 @@ import React from "react";
 
 const About = () => {
   return (
-    <div className="w-full bg-gray py-8 pr-20">
+    <div id="about" className="w-full bg-gray py-8 pr-20">
       <div className="max-w-[1240px] mx-auto grid md:grid-cols-2">
         <img className="w-[600px] mx-auto my-4" src="/images/about.png" alt="/" />
         <div className="flex flex-col justify-center">
@@ -15,9 +15,11 @@ const About = () => {
             <br /> Es importante para nosotros que tu visita sea una experiencia única y especial para ti. Estamos
             comprometidos a aconsejarte y ayudarte para que te sientas mejor que nunca.
           </p>
-          <button className="bg-rose text-white w-[200px] rounded-full shadow-gray shadow-2xl font-medium my-6 mx-auto md:mx-0 py-3 shadow-2xl">
-            <span className="flex ml-2 justify-center ">Contactanos!</span>
-          </button>
+          <a href="https://www.instagram.com/esteticapeluquerialorena/">
+            <button className="bg-rose text-white w-[200px] rounded-full shadow-gray shadow-2xl font-medium my-6 mx-auto md:mx-0 py-3 shadow-2xl">
+              <span className="flex ml-2 justify-center ">Contactanos!</span>
+            </button>
+          </a>
         </div>
       </div>
     </div>

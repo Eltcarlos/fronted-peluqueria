@@ -19,6 +19,7 @@ export const startSignIn = (form) => {
 
         return dispatch(logout(message));
       }
+      localStorage.setItem("token", result.token);
       dispatch(login(result.usuario));
     } catch (error) {
       console.log(error);

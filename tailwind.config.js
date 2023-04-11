@@ -27,6 +27,9 @@ module.exports = {
         gray: "#1C1D24",
         rose: "#FFA0E3",
       },
+      backgroundImage: {
+        default: "url('../public/images/principal.jpg')",
+      },
     },
   },
   plugins: [require("@tailwindcss/line-clamp")],
