@@ -32,8 +32,9 @@ export const getAllCash = (data) => {
 export const getCash = () => {
   return async (dispatch) => {
     try {
+      const url = process.env.REACT_APP_BACKEND_CORE;
       const token = localStorage.getItem("token");
-      const { data } = await fetch("http://localhost:8080/api/cash/registers", {
+      const { data } = await fetch(`${url}/api/cash/registers`, {
         headers: {
           "x-token": `${token}`,
         },

@@ -3,8 +3,9 @@ import { checkingCredentials, login, logout } from "./authSlice";
 export const startSignIn = (form) => {
   return async (dispatch) => {
     try {
+      const url = process.env.REACT_APP_BACKEND_CORE;
       dispatch(checkingCredentials());
-      const result = await fetch("http://localhost:8080/api/login", {
+      const result = await fetch(`${url}/api/login`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -31,7 +32,8 @@ export const startRegister = (form) => {
   return async (dispatch) => {
     try {
       dispatch(checkingCredentials());
-      const result = await fetch("http://localhost:8080/api/login/new", {
+      const url = process.env.REACT_APP_BACKEND_CORE;
+      const result = await fetch(`${url}/api/login/new`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",

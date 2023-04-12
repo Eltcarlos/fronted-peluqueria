@@ -6,7 +6,8 @@ import { useSocket } from "../hooks/useSocket";
 export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
-  const { socket, online, conectarSocket, desconectarSocket } = useSocket("http://localhost:8080");
+  const url = process.env.REACT_APP_BACKEND_CORE;
+  const { socket, online, conectarSocket, desconectarSocket } = useSocket(`${url}`);
   const { status } = useSelector((state) => state.authState);
 
   useEffect(() => {

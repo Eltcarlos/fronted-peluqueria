@@ -30,8 +30,9 @@ export const getAllReservation = (data) => {
 export const getReservation = () => {
   return async (dispatch) => {
     try {
+      const url = process.env.REACT_APP_BACKEND_CORE;
       const token = localStorage.getItem("token");
-      const { data } = await fetch("http://localhost:8080/api/reservation/registers", {
+      const { data } = await fetch(`${url}/api/reservation/registers"`, {
         headers: {
           "x-token": `${token}`,
         },
