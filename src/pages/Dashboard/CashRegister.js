@@ -37,6 +37,7 @@ const CashRegister = () => {
     .reduce((previous, current) => {
       return previous + current.amount;
     }, 0);
+
   const total = filterToCard + filterToMoney;
 
   return (

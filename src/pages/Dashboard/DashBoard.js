@@ -41,12 +41,39 @@ const DashBoard = () => {
     };
   });
 
-  const { options, data } = useDashBoard(filterToMiriam, filterToLorena, reservation);
+  const filterToLorenaTotal = cash
+    .filter((index) => index.worker === "Lorena")
+    .reduce((previous, current) => {
+      return previous + current.amount;
+    }, 0);
+
+  const filterToMiriamTotal = cash
+    .filter((index) => index.worker === "Miriam")
+    .reduce((previous, current) => {
+      return previous + current.amount;
+    }, 0);
+
+  const { options, data, dataTotal } = useDashBoard(
+    filterToMiriam,
+    filterToLorena,
+    reservation,
+    filterToLorenaTotal,
+    filterToMiriamTotal
+  );
 
   return (
     <SideBar>
       <h2 className="text-black text-xl font-bold">DashBoard</h2>
-      <Chart options={options} data={data} />
+      <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-5 mt-6">
+        <div className="items-center">
+          <h2 className="text-black  text-xl font-bold">Ganancias del Dia</h2>
+          <Chart options={options} data={data} />
+        </div>
+        <div className="items-center">
+          <h2 className="text-black  text-xl font-bold">Ganancias Totales</h2>
+          <Chart options={options} data={dataTotal} />
+        </div>
+      </div>
     </SideBar>
   );
 };

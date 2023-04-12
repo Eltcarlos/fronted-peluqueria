@@ -1,7 +1,7 @@
 import { Chart as ChartJS, CategoryScale, ArcElement, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export const useDashBoard = (filterToMiriam, filterToLorena, reservation) => {
+export const useDashBoard = (filterToMiriam, filterToLorena, reservation, filterToLorenaTotal, filterToMiriamTotal) => {
   const options = {
     responsive: true,
     plugins: {
@@ -23,6 +23,22 @@ export const useDashBoard = (filterToMiriam, filterToLorena, reservation) => {
         label: "Lorena",
         data: labels.map(() => filterToLorena),
         backgroundColor: "rgba(53, 162, 235, 0.5)",
+      },
+    ],
+  };
+
+  const dataTotal = {
+    labels,
+    datasets: [
+      {
+        label: "Miriam",
+        data: labels.map(() => filterToMiriamTotal),
+        backgroundColor: "rgba(153, 102, 255, 0.2)",
+      },
+      {
+        label: "Lorena",
+        data: labels.map(() => filterToLorenaTotal),
+        backgroundColor: "rgba(75, 192, 192, 1)",
       },
     ],
   };
@@ -60,5 +76,6 @@ export const useDashBoard = (filterToMiriam, filterToLorena, reservation) => {
     options,
     data,
     dataPie,
+    dataTotal,
   };
 };
