@@ -9,7 +9,7 @@ import SideBar from "./SideBar";
 
 const CashRegister = () => {
   const { columns } = useCashFetch();
-  const { cash } = useSelector((store) => store.cash);
+  const { cash } = useSelector((store) => store.cashState);
 
   const today = format(new Date(), "yyyy-MM-dd");
 

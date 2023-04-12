@@ -16,7 +16,7 @@ const About = () => {
             comprometidos a aconsejarte y ayudarte para que te sientas mejor que nunca.
           </p>
           <a href="https://www.instagram.com/esteticapeluquerialorena/">
-            <button className="bg-rose text-white w-[200px] rounded-full shadow-gray shadow-2xl font-medium my-6 mx-auto md:mx-0 py-3 shadow-2xl">
+            <button className="bg-rose text-white w-[200px] rounded-full shadow-gray  font-medium my-6 mx-auto md:mx-0 py-3 shadow-2xl">
               <span className="flex ml-2 justify-center ">Contactanos!</span>
             </button>
           </a>

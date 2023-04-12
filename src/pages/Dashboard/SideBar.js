@@ -1,23 +1,26 @@
 import React, { useEffect } from "react";
-import { BsCalendar2Date, BsFillGridFill } from "react-icons/bs";
+import { BsCalendar2Date, BsFillGridFill, BsFillHouseDoorFill } from "react-icons/bs";
 import { FaCashRegister } from "react-icons/fa";
 import { RiLogoutCircleLine } from "react-icons/ri";
 
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/auth/authSlice";
 import { removeCash } from "../../store/cashRegister/cashSlice";
+import { removeReservation } from "../../store/reservation/reservationSlice";
 
 const SideBar = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { status } = useSelector((state) => state.auth);
+  const { status } = useSelector((state) => state.authState);
 
   const logOut = () => {
     const message = "Error en la petición";
     dispatch(logout(message));
     dispatch(removeCash());
+    dispatch(removeReservation());
     localStorage.removeItem("token");
+    localStorage.removeItem("persist:root");
   };
 
   useEffect(() => {
@@ -62,8 +65,14 @@ const SideBar = ({ children }) => {
                 </NavLink>
               ))
             }
+            <Link to="/">
+              <button className={`${inActive} ${hover} w-full`}>
+                <BsFillHouseDoorFill /> Inicio
+              </button>
+            </Link>
+
             <button onClick={logOut} className={`${inActive} ${hover} w-full`}>
-              <RiLogoutCircleLine /> Log Out
+              <RiLogoutCircleLine /> Salir
             </button>
           </div>
           <div className="col-span-6 rounded-md bg-white border border-gray-800 p-6">{children}</div>

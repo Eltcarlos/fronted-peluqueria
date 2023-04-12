@@ -2,15 +2,18 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { startSignIn } from "../store/auth/thunks";
+import { startRegister } from "../store/auth/thunks";
 import "react-toastify/dist/ReactToastify.css";
 import { logout } from "../store/auth/authSlice";
+import { removeCash } from "../store/cashRegister/cashSlice";
+import { removeReservation } from "../store/reservation/reservationSlice";
 
-const Login = () => {
+const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { errorMessage, isAdmin } = useSelector((state) => state.authState);
+  const { errorMessage, status } = useSelector((state) => state.authState);
   const [form, setForm] = useState({
+    nombre: "",
     email: "",
     password: "",
   });
@@ -18,7 +21,7 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     setForm(form);
-    dispatch(startSignIn(form));
+    dispatch(startRegister(form));
   };
 
   const onChange = ({ target }) => {
@@ -30,10 +33,16 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (isAdmin === true) {
-      navigate("/dashboard/statistics");
+    dispatch(logout("error"));
+    dispatch(removeCash());
+    dispatch(removeReservation());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      navigate("/");
     }
-  }, [isAdmin, navigate]);
+  }, [status, navigate]);
 
   useEffect(() => {
     if (errorMessage != null) {
@@ -56,7 +65,18 @@ const Login = () => {
           <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12">
             <form>
               <div className="my-4 pr-10 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
-                <p className="mx-4 mb-0 text-center font-semibold dark:text-white">Login</p>
+                <p className="mx-4 mb-0 text-center font-semibold dark:text-white">Register</p>
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                <input
+                  type="text"
+                  name="nombre"
+                  value={form.nombre}
+                  className="p-3 flex w-full rounded-md text-black"
+                  placeholder="Nombre"
+                  onChange={onChange}
+                />
               </div>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
@@ -95,7 +115,7 @@ const Login = () => {
                   data-te-ripple-init
                   data-te-ripple-color="light"
                 >
-                  Login
+                  Register
                 </button>
               </div>
             </form>
@@ -106,4 +126,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

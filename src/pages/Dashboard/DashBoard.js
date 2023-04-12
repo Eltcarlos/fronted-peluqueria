@@ -1,18 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Chart from "../../components/Chart/Chart";
+import { SocketContext } from "../../context/SocketContext";
 import { useDashBoard } from "../../hooks/dashboard";
-import { getAllCash } from "../../store/cashRegister/thunks";
+import { getAllCash, getCash } from "../../store/cashRegister/thunks";
 import SideBar from "./SideBar";
 
 const DashBoard = () => {
-  const { cash } = useSelector((state) => state.cash);
-  const { reservations } = useSelector((state) => state.reservation);
-
+  const { cash } = useSelector((state) => state.cashState);
+  const { reservations } = useSelector((state) => state.reservationState);
   const dispatch = useDispatch();
+  const { socket } = useContext(SocketContext);
+
   useEffect(() => {
-    dispatch(getAllCash());
-  }, [dispatch]);
+    socket?.on("list-cash", (data) => {
+      dispatch(getAllCash(data));
+    });
+  }, [socket, dispatch]);
+
+  useEffect(() => {
+    dispatch(getCash());
+  }, [socket, dispatch]);
 
   const filterToMiriam = cash
     .filter((index) => index.worker === "Miriam")

@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllCash, sendCash } from "../../store/cashRegister/thunks";
+import { useContext, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getAllCash, getCash } from "../../store/cashRegister/thunks";
 import Select from "react-select";
 import { useCashFetch } from "../../hooks/cashFetch";
 import Swal from "sweetalert2";
-import { cashLoad } from "../../store/cashRegister/cashSlice";
+import { SocketContext } from "../../context/SocketContext";
 
 const CashForm = () => {
   const dispatch = useDispatch();
-  const { cashLoading } = useSelector((state) => state.cash);
+  const { socket } = useContext(SocketContext);
   const { method, worker, customStyles, setForm, onChange, handleChange, handleChangeMethod, form } = useCashFetch();
-  const [state, setState] = useState(false);
 
   const onClick = (e) => {
     e.preventDefault();
@@ -25,32 +24,27 @@ const CashForm = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          position: "top-end",
           icon: "success",
           title: "Se ha guardado su registro correctamente",
           showConfirmButton: false,
           timer: 1500,
         });
-        dispatch(cashLoad());
-        dispatch(sendCash(form));
-        setTimeout(() => {
-          setState(false);
-        }, 2000);
+        socket.emit("list-cash", form);
       } else {
-        return setState(false);
+        return;
       }
     });
   };
 
   useEffect(() => {
-    dispatch(getAllCash());
-  }, [dispatch]);
+    socket?.on("list-cash", (data) => {
+      dispatch(getAllCash(data));
+    });
+  }, [socket, dispatch]);
 
   useEffect(() => {
-    if (cashLoading === true || state === true) {
-      dispatch(getAllCash());
-    }
-  }, [dispatch, cashLoading, state]);
+    dispatch(getCash());
+  }, [socket, dispatch]);
 
   return (
     <div className="w-full ">

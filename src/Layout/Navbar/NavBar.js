@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Link } from "react-scroll";
+import { logout } from "../../store/auth/authSlice";
+import { removeCash } from "../../store/cashRegister/cashSlice";
+import { removeReservation } from "../../store/reservation/reservationSlice";
 
 export const navigation = [
   {
@@ -27,12 +31,24 @@ export const navigation = [
 
 const NavBar = () => {
   const [bg, setBg] = useState(false);
+  const { status } = useSelector((state) => state.authState);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
       return window.scrollY > 50 ? setBg(true) : setBg(false);
     });
   }, []);
+
+  const logOut = () => {
+    const message = "Error en la petición";
+    dispatch(logout(message));
+    dispatch(removeCash());
+    dispatch(removeReservation());
+    localStorage.removeItem("token");
+    localStorage.removeItem("persist:root");
+  };
+
   return (
     <div
       className={`${
@@ -65,6 +81,12 @@ const NavBar = () => {
             </li>
           );
         })}
+        {status === "authenticated" && (
+          <NavLink onClick={logOut} className="text-white hover:text-rose cursor-pointer">
+            {" "}
+            Logout{" "}
+          </NavLink>
+        )}
       </ul>
     </div>
   );

@@ -1,21 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import Table1 from "../../components/tables/Table";
 import { useReservationFetch } from "../../hooks/reservationFetch";
-import { getAllReservation, sendReservationByID } from "../../store/reservation/thunks";
+import { getAllReservation, getReservation } from "../../store/reservation/thunks";
 import SideBar from "./SideBar";
 import Swal from "sweetalert2";
+import { SocketContext } from "../../context/SocketContext";
 
 const Reservation = () => {
   const dispatch = useDispatch();
-  const { reservations } = useSelector((state) => state.reservation);
+  const { reservations } = useSelector((state) => state.reservationState);
+  const { socket } = useContext(SocketContext);
   const { columns } = useReservationFetch();
-  const [state, setState] = useState(false);
-
-  useEffect(() => {
-    dispatch(getAllReservation());
-  }, [dispatch]);
 
   const customStyles = {
     fontSize: 14,
@@ -60,29 +57,33 @@ const Reservation = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          position: "top-end",
           icon: "success",
           title: "Se ha guardado su registro correctamente",
           showConfirmButton: false,
           timer: 1500,
         });
-
-        dispatch(sendReservationByID(form));
-        setState(true);
-        setTimeout(() => {
-          setState(false);
-        }, 2000);
+        socket.emit("list-reservationByID", form);
       } else {
-        return setState(false);
+        return;
       }
     });
   };
 
   useEffect(() => {
-    if (state === true) {
-      dispatch(getAllReservation());
-    }
-  }, [dispatch, state]);
+    socket?.on("list-reservationByID", (data) => {
+      dispatch(getAllReservation(data));
+    });
+  }, [socket, dispatch]);
+
+  useEffect(() => {
+    socket?.on("list-reservation", (data) => {
+      dispatch(getAllReservation(data));
+    });
+  }, [socket, dispatch]);
+
+  useEffect(() => {
+    dispatch(getReservation());
+  }, [dispatch]);
 
   return (
     <SideBar>

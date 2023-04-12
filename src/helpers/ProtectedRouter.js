@@ -4,15 +4,15 @@ import { Navigate, Outlet } from "react-router-dom";
 
 // public protection
 const ProtectedRouter = () => {
-  const { status } = useSelector((state) => state.auth);
+  const { isAdmin } = useSelector((state) => state.authState);
 
-  return status === "authenticated" ? <Outlet /> : <Navigate to="/" />;
+  return isAdmin === true ? <Outlet /> : <Navigate to="/" />;
 };
 
 // admin router protection
 
 const AdminProtectedRouter = () => {
-  const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.authState);
 
   return userInfo?.token ? userInfo?.isAdmin ? <Outlet /> : <Navigate to="/*" /> : <Navigate to="/login" />;
 };
