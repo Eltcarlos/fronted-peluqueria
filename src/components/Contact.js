@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { SocketContext } from "../context/SocketContext";
-import { getAllReservation, getReservation } from "../store/reservation/thunks";
+import { getAllReservation } from "../store/reservation/thunks";
 
 const Contact = () => {
   const { status } = useSelector((state) => state.authState);
@@ -57,10 +57,6 @@ const Contact = () => {
       dispatch(getAllReservation(data));
     });
   }, [socket, dispatch]);
-
-  useEffect(() => {
-    dispatch(getReservation());
-  }, [dispatch]);
 
   return (
     <div id="citas" className="w-full bg-black py-16 px-4">
